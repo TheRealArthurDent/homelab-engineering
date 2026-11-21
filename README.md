@@ -10,6 +10,8 @@ rules for the deleted `deploy.sh`. And in a cloud session with several repos che
 repo the session starts in apply, if any. This repo keeps **one** guard and **one** hosts policy and installs them
 user-wide, so they apply in every session, whatever repo it starts in.
 
+How the homelab itself fits together (hosts, shared services, stacks, repos): [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ## What's in it
 
 | Path | Installed to | What |
