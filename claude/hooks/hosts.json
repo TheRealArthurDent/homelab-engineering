@@ -1,0 +1,10 @@
+{
+  "$comment": "Which hosts the guard treats as production. The one place to change when a Pi is added, renamed or repurposed. tests/test_hosts.py checks that every host in the sibling repos' inventories is listed here.",
+  "production": {
+    "raspi": {"address": "192.168.1.2", "role": "smart home (infrastructure + smart-home)"},
+    "dungeon": {"address": "192.168.1.5", "role": "private cloud and backup target (infrastructure + private-cloud)"}
+  },
+  "test": {
+    "testbench": {"address": "192.168.1.7", "role": "test Pi for real integration runs"}
+  }
+}

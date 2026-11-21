@@ -1,0 +1,53 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  # Every PR, without a paths filter, so the check can become required.
+  pull_request:
+  # The sibling repos' inventories change without a PR here; check weekly that hosts.json still covers them.
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7.0.1
+        with:
+          path: homelab-engineering
+
+      # Checked out next to this repo, as in the cloud environment, for tests/test_hosts.py.
+      - name: Checkout infrastructure
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: TheRealArthurDent/infrastructure
+          path: infrastructure
+      - name: Checkout smart-home
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: TheRealArthurDent/smart-home
+          path: smart-home
+      - name: Checkout private-cloud
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: TheRealArthurDent/private-cloud
+          path: private-cloud
+
+      - name: Set up Python
+        uses: actions/setup-python@v7.1.0
+        with:
+          python-version: '3.15'
+
+      - name: Run tests
+        working-directory: homelab-engineering
+        run: |
+          pip install -r requirements.txt
+          pytest
