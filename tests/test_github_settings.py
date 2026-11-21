@@ -146,10 +146,18 @@ def test_own_collaborators_use_api_permissions():
 
 
 def test_required_checks_exist_and_run_on_every_pr():
+    """Every required check is a job of some workflow that runs on every PR. A context no job reports, or one skipped
+    by a paths filter, would block every merge."""
     ruleset = json.loads((ROOT / ".github" / "rulesets" / "require-green-checks.json").read_text())
     required = {c["context"] for c in ruleset["rules"][0]["parameters"]["required_status_checks"]}
-    workflow = yaml.safe_load((ROOT / ".github" / "workflows" / "tests.yaml").read_text())
-    jobs = {job.get("name", key) for key, job in workflow["jobs"].items()}
-    assert required <= jobs
-    triggers = workflow.get("on", workflow.get(True))
-    assert "paths" not in (triggers["pull_request"] or {})
+    jobs = {}
+    for path in sorted((ROOT / ".github" / "workflows").glob("*.yaml")):
+        workflow = yaml.safe_load(path.read_text())
+        triggers = workflow.get("on", workflow.get(True))
+        for key, job in workflow["jobs"].items():
+            jobs[job.get("name", key)] = (path.name, triggers)
+    assert required <= set(jobs), f"required checks without a job: {sorted(required - set(jobs))}"
+    for context in required:
+        workflow, triggers = jobs[context]
+        assert "pull_request" in triggers, f"{context} ({workflow}) doesn't run on pull requests"
+        assert "paths" not in (triggers["pull_request"] or {}), f"{context} ({workflow}) has a paths filter"
