@@ -24,6 +24,10 @@
           {
             "context": "pytest",
             "integration_id": 15368
+          },
+          {
+            "context": "spellcheck",
+            "integration_id": 15368
           }
         ],
         "strict_required_status_checks_policy": false
