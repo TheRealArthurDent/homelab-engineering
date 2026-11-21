@@ -9,7 +9,9 @@ CLAUDE.md, shared skills and agents, and the setup scripts that install them int
   `agents/`
 - `setup/install-claude-config.sh` – copies `claude/` into `~/.claude` and merges the settings
 - `setup/cloud-environment.sh` – setup script of the Claude Code cloud environment
-- `tests/` – pytest: guard rules, hosts policy against the sibling repos' inventories, installer
+- `github/github-settings.sh` – rulesets, repository settings and collaborators of any homelab repo, kept in its
+  `.github/`; this repo's own are in `.github/`
+- `tests/` – pytest: guard rules, hosts policy against the sibling repos' inventories, installer, github-settings.sh
 
 ## Rules
 
