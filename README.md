@@ -5,7 +5,7 @@ Shared Claude Code config for [infrastructure](https://github.com/TheRealArthurD
 [private-cloud](https://github.com/TheRealArthurDent/private-cloud).
 
 The three repos each carry their own copy of the guard hook, its settings and its tests, and the copies have drifted:
-infrastructure's `guard.py` does not block `dungeon` (production, backup target), still names `testbed` and still has
+infrastructure's `guard.py` does not block `dungeon` (production, backup target), still points to the old host name `testbed` and still has
 rules for the deleted `deploy.sh`. And in a cloud session with several repos checked out, only the settings of the
 repo the session starts in apply, if any. This repo keeps **one** guard and **one** hosts policy and installs them
 user-wide, so they apply in every session, whatever repo it starts in.
@@ -15,7 +15,7 @@ user-wide, so they apply in every session, whatever repo it starts in.
 | Path | Installed to | What |
 | --- | --- | --- |
 | `claude/hooks/guard.py` | `~/.claude/hooks/` | The union of the three repos' guards, production hosts read from `hosts.json`; fails closed without it |
-| `claude/hooks/hosts.json` | `~/.claude/hooks/` | Production (`raspi`, `dungeon`) and test (`testbench`, alias `testbed`) hosts |
+| `claude/hooks/hosts.json` | `~/.claude/hooks/` | Production (`raspi`, `dungeon`) and test (`testbench`) hosts |
 | `claude/settings.json` | merged into `~/.claude/settings.json` | Hook wiring and deny rules for secrets |
 | `claude/CLAUDE.md` | `~/.claude/homelab/CLAUDE.md`, imported from `~/.claude/CLAUDE.md` | Cross-repo context: repo map, dependency direction, hosts |
 | `claude/skills/ansible-role/` | `~/.claude/skills/` | Moved from infrastructure; smart-home and private-cloud already point to it |
@@ -47,7 +47,7 @@ It must answer with "Blocked by guard.py". If it doesn't, the session didn't loa
 2. Set up the cloud environment as above and run the guard check.
 3. **Now, independently of the rest:** fix infrastructure's own `guard.py` (dungeon, `testbench`, no `deploy.sh`).
    Until step 5 it is the only guard in local WSL sessions started in infrastructure.
-4. Rename `testbed` to `testbench` in private-cloud's inventory and CLAUDE.md (the same Pi has two names).
+4. Rename the last uses of the old name `testbed` in private-cloud (inventory, CLAUDE.md, README, guard) to `testbench`.
 5. Once the shared guard has run for a while: in each repo, replace `.claude/hooks/guard.py`, its settings entries and
    `test_guard_hook.py` with a pointer to this repo, and delete `ansible-role` from infrastructure. One PR per repo.
 6. Later, if the drift keeps costing time: move the other copied files here too (rulesets, `repo-settings.json`,

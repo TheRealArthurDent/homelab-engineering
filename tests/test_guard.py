@@ -41,7 +41,7 @@ BLOCKED_COMMANDS = [
     "KEEPASS_DB=x ansible-playbook setup-pihole.yaml -l raspi",
     "ansible-playbook deploy.yaml --limit=all",
     "ansible-playbook deploy.yaml --limit 'testbench,raspi'",
-    "ansible-playbook deploy.yaml --limit 'testbed,dungeon'",
+    "ansible-playbook deploy.yaml --limit 'testbench,dungeon'",
     "cd ansible && ../.venv/bin/ansible-playbook deploy.yaml",
     "ansible raspi -m ping",
     "ansible dungeon -m ping",
@@ -76,7 +76,7 @@ BLOCKED_COMMANDS = [
 
 ALLOWED_COMMANDS = [
     "ansible-playbook bootstrap.yaml --limit testbench --check --diff",
-    "cd ansible && ansible-playbook deploy.yaml --limit testbed --check --diff",
+    "cd ansible && ansible-playbook deploy.yaml --limit testbench --check --diff",
     "bin/with-keepass ansible-playbook bootstrap.yaml --limit testbench",
     "ANSIBLE_ROLES_PATH=roles ansible-playbook -i localhost, --syntax-check --limit localhost converge.yaml",
     ".venv/bin/ansible-lint --strict ansible/",
