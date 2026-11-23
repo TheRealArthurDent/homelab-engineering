@@ -22,22 +22,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           path: homelab-engineering
 
       # Checked out next to this repo, as in the cloud environment, for tests/test_hosts.py.
       - name: Checkout infrastructure
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           repository: TheRealArthurDent/infrastructure
           path: infrastructure
       - name: Checkout smart-home
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           repository: TheRealArthurDent/smart-home
           path: smart-home
       - name: Checkout private-cloud
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
           repository: TheRealArthurDent/private-cloud
           path: private-cloud
 
