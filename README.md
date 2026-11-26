@@ -28,7 +28,7 @@ Repo-specific skills (`working-with-ansible`, `working-with-the-stack`) stay in 
 
 Besides the Claude config, `github/github-settings.sh` keeps a repo's GitHub settings in files, for every homelab
 repo: rulesets (`.github/rulesets/`), repository settings (`.github/repo-settings.json`) and collaborators
-(`.github/collaborators.json`, e.g. the Renovate bot). Run it from inside the repo; it takes the repo from `origin`:
+(`.github/collaborators.json`). Run it from inside the repo; it takes the repo from `origin`:
 
 ```sh
 cd ~/dev/smart-home && ~/dev/homelab-engineering/github/github-settings.sh diff   # or apply, export [--force]
@@ -56,7 +56,7 @@ It must answer with "Blocked by guard.py". If it doesn't, the session didn't loa
 ## Rollout, step by step
 
 1. Create the repo, push this content, then apply its own settings: `github/github-settings.sh apply` from this
-   checkout (rulesets, auto merge, secret scanning, `P4ranoidAndroid` as collaborator for Renovate).
+   checkout (rulesets, auto merge, secret scanning).
 2. Set up the cloud environment as above and run the guard check.
 3. **Now, independently of the rest:** fix infrastructure's own `guard.py` (dungeon, `testbench`, no `deploy.sh`).
    Until step 5 it is the only guard in local WSL sessions started in infrastructure.
@@ -64,7 +64,7 @@ It must answer with "Blocked by guard.py". If it doesn't, the session didn't loa
 5. Once the shared guard has run for a while: in each repo, replace `.claude/hooks/guard.py`, its settings entries and
    `test_guard_hook.py` with a pointer to this repo, and delete `ansible-role` from infrastructure. One PR per repo.
 6. Replace each repo's `scripts/github-settings.sh` with this repo's `github/github-settings.sh` (the copies differ
-   only in their default `REPO`), and add a `.github/collaborators.json` where the Renovate bot needs access. The
+   only in their default `REPO`). Renovate runs as a GitHub App and needs no collaborator entry. The
    repos' `test_repo_settings.py` check for their own script and need adjusting in the same PR.
 7. Later, if the drift keeps costing time: move the other copied files here too (lint configs, `test_rulesets.py`,
    `test_repo_hygiene.py`) and sync them with a script.

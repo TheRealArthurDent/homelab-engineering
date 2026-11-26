@@ -140,8 +140,11 @@ def test_missing_files_are_skipped(repo):
 # --- this repo's own settings files --------------------------------------------------------------------------------
 
 def test_own_collaborators_use_api_permissions():
-    collaborators = json.loads((ROOT / ".github" / "collaborators.json").read_text())
-    assert collaborators["P4ranoidAndroid"] == "push"
+    """Renovate runs as a GitHub App, so this repo needs no collaborator file; if one comes back, it uses API names."""
+    path = ROOT / ".github" / "collaborators.json"
+    if not path.exists():
+        return
+    collaborators = json.loads(path.read_text())
     assert set(collaborators.values()) <= {"pull", "triage", "push", "maintain", "admin"}
 
 
